@@ -16,6 +16,7 @@
 #include <asm/io.h>
 
 int yl_pwr_btn_click_count = 0;
+
 volatile int set_flag = -1;
 
 static void rk8xx_pwron_rise_handler(int irq, void *data)

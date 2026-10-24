@@ -14,6 +14,7 @@
 #include <menu.h>
 #include <post.h>
 #include <u-boot/sha256.h>
+#include "osl.h"
 
 DECLARE_GLOBAL_DATA_PTR;
 
@@ -371,8 +372,11 @@ void autoboot_command(const char *s)
 		int abort;
 
 		/* round 3c: the laptop keyboard and the screen before the countdown */
-		osl_countdown_input();
+		if(yl_pwr_btn_click_count == YL_BOOT_DEBUG) {
+			osl_countdown_input();
+		}
 		abort = abortboot(stored_bootdelay);
+
 		if (abort == 2) {	/* round 3c: Esc opens the boot menu */
 			menu_show(30);
 			return;

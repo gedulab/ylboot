@@ -17,6 +17,15 @@
 #define USB_UPDATE_FAILED	3
 #define SDC_BOOT_FAILED		4
 
+// boot mode, can be changed by powerkey
+extern int yl_pwr_btn_click_count; // defined and set in rk8xx_pwrkey.c
+#define YL_BOOT_FAST  1 //  - normal boot flow
+// 2 - reserved
+#define YL_BOOT_DEBUG 3 // - advanced debug mode, enable usb and show boot menu 
+// 4 - reserved
+#define YL_BOOT_UPDATE 5 // - usb update
+//
+
 #define OSL_MAX_BOOT_CMDS 15
 enum YL_BOOT_MEDIA  {   
     YL_BOOT_MEDIA_UNKNOWN = 0,

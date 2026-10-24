@@ -21,7 +21,7 @@ static const char* ini_paths[] = {
 	"/ylboot.ini", "/boot/ylboot.ini"
 };
 extern char* yl_boot_args[];
-extern int yl_pwr_btn_click_count; // defined and set in rk8xx_pwrkey.c
+
 void bootmenu_show(int delay);
 
 static int osl_feed_sum_section(osl_mgr* om, char* name, char* value)
@@ -170,7 +170,7 @@ static int osl_read_file(osl_mgr* om, const char * ifname, const char* devpart, 
 
 	if(path == NULL) {
 		puts("osl: bad call to osl_read_file() with NULL path\n");
-		return -E_BAD_ARGUMENT;
+		return -EBADF;
 	}
     ret = fs_set_blk_dev(ifname, devpart, fstype);
 	if (ret) {
