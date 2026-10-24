@@ -168,6 +168,10 @@ static int osl_read_file(osl_mgr* om, const char * ifname, const char* devpart, 
 	int ret = 0;
 	loff_t read;
 
+	if(path == NULL) {
+		puts("osl: bad call to osl_read_file() with NULL path\n");
+		return -E_BAD_ARGUMENT;
+	}
     ret = fs_set_blk_dev(ifname, devpart, fstype);
 	if (ret) {
 		goto failure;
@@ -907,8 +911,8 @@ static int osl_boot_by_ini(osl_mgr* om, const char* bootdev)
 		}
 	}
 	/* Factory eMMC has no ini; keep its existing legacy boot and LCD logo. */
-	if (!found && !strcmp(bootdev, "emmc")) {
-		printf("osl: factory eMMC has no ini, use legacy boot\n");
+	if (!found) {
+		printf("osl: no ini was found in %s\n", bootdev);
 		return -ENOENT;
 	}
     ret = osl_read_boot_ini(om, om->bootif_, om->devpart_, om->fs_type_, om->ini_path_);
