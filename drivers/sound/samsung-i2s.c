@@ -5,9 +5,9 @@
  * SPDX-License-Identifier:	GPL-2.0+
  */
 
-#include <asm/arch/clk.h>
-#include <asm/arch/pinmux.h>
-#include <asm/arch/i2s-regs.h>
+// #include <asm/arch/clk.h>
+// #include <asm/arch/pinmux.h>
+#include <i2s-regs.h>
 #include <asm/io.h>
 #include <common.h>
 #include <sound.h>
@@ -301,13 +301,13 @@ int i2s_tx_init(struct i2stx_info *pi2s_tx)
 				(struct i2s_reg *)pi2s_tx->base_address;
 	if (pi2s_tx->id == 0) {
 		/* Initialize GPIO for I2S-0 */
-		exynos_pinmux_config(PERIPH_ID_I2S0, 0);
+		//exynos_pinmux_config(PERIPH_ID_I2S0, 0);
 
 		/* Set EPLL Clock */
 		ret = set_epll_clk(pi2s_tx->samplingrate * pi2s_tx->rfs * 4);
 	} else if (pi2s_tx->id == 1) {
 		/* Initialize GPIO for I2S-1 */
-		exynos_pinmux_config(PERIPH_ID_I2S1, 0);
+		//exynos_pinmux_config(PERIPH_ID_I2S1, 0);
 
 		/* Set EPLL Clock */
 		ret = set_epll_clk(pi2s_tx->audio_pll_clk);

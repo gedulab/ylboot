@@ -108,5 +108,8 @@ int i2s_transfer_tx_data(struct i2stx_info *pi2s_tx, unsigned *data,
  * @return		int value 0 for success, -1 in case of error
  */
 int i2s_tx_init(struct i2stx_info *pi2s_tx);
+// added by Raymond
+int i2s_sound_init(const void *blob);
 
+int i2s_sound_play(uint32_t msec, uint32_t frequency);
 #endif /* __I2S_H__ */

@@ -11,9 +11,9 @@
  */
 
 #include <common.h>
-#include <asm/arch/clk.h>
+//#include <asm/arch/clk.h>
 #include <asm/arch/cpu.h>
-#include <asm/arch/power.h>
+//#include <asm/arch/power.h>
 #include <asm/gpio.h>
 #include <asm/io.h>
 #include <common.h>

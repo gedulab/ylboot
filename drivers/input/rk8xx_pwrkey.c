@@ -14,7 +14,7 @@
 #include <user_image.h>
 #include <asm/arch/boot_mode.h>
 #include <asm/io.h>
-
+#include <ansi.h>
 int yl_pwr_btn_click_count = 0;
 
 volatile int set_flag = -1;
@@ -37,7 +37,10 @@ static void rk8xx_pwron_rise_handler(int irq, void *data)
 	}
 #endif
 }
-
+static void yl_pwrkey_usage()
+{
+	printf("YourLand PowerKey usage:\n\t1 - Fast\n\t2 - Menu\n\t3 - eMMC\n\t5 - USB Update\n");
+}
 static void rk8xx_pwron_fall_handler(int irq, void *data)
 {
 	struct udevice *dev = data;
@@ -48,6 +51,16 @@ static void rk8xx_pwron_fall_handler(int irq, void *data)
 
 	debug("%s: %llu ms\n", __func__, key->fall_ms);
 	yl_pwr_btn_click_count++;
+	if(yl_pwr_btn_click_count > 1) {
+		if(yl_pwr_btn_click_count == 2) {
+			ndb_enable_lcd("pwrkey", 0);
+			yl_pwrkey_usage();
+		}
+		// puts(ANSI_COLOR_REVERSE);
+		printf("Power button counter = \033[1;5;31m%d\033[0m\n", yl_pwr_btn_click_count);
+		// puts(ANSI_COLOR_RESET);
+		udelay(2000*1000); // delay 2 second to let user see the counter
+	}
 	if((yl_pwr_btn_click_count >= 5) && (set_flag == 0)) {
 		update_show_bmp("update_sys.bmp",&gImage_12);
 		printf("set usb update flag!\n");

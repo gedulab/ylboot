@@ -5,7 +5,7 @@
  * SPDX-License-Identifier:	GPL-2.0+
  */
 #include <common.h>
-#include <asm/arch/clk.h>
+//#include <asm/arch/clk.h>
 #include <asm/arch/cpu.h>
 #include <asm/gpio.h>
 #include <asm/io.h>
@@ -14,7 +14,7 @@
 #include <i2c.h>
 #include <i2s.h>
 #include <sound.h>
-#include <asm/arch/sound.h>
+//#include <asm/arch/sound.h>
 #include "wm8994.h"
 #include "wm8994_registers.h"
 

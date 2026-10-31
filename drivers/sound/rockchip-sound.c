@@ -12,6 +12,7 @@
 #include <i2s.h>
 #include <sound.h>
 #include <asm/arch-rockchip/resource_img.h>
+#include "yl_wave.h"
 
 #define WAV_SIZE		(5 * 1024 * 1024) /* BYTE */
 #define SAMPLERATE		44100
@@ -65,20 +66,14 @@ int sound_init(const void *blob)
 
 	ret = uclass_get_device(UCLASS_I2S, 0, &i2s_dev);
 	if (ret) {
-		if (ret != -ENODEV) {
-			printf("Get i2s device failed: %d\n", ret);
-			return ret;
-		}
-		return 0;
+		printf("Get i2s device failed: %d\n", ret);
+		return ret;
 	}
 
-	ret = uclass_get_device(UCLASS_CODEC, 0, &codec_dev);
+	ret = uclass_get_device(UCLASS_AUDIO_CODEC, 0, &codec_dev);
 	if (ret) {
-		if (ret != -ENODEV) {
-			printf("Get codec device failed: %d\n", ret);
-			return ret;
-		}
-		return 0;
+		printf("Get codec device failed: %d\n", ret);
+		return ret;
 	}
 
 	sound_set_sysclk(i2s_dev, SAMPLERATE * 256);
@@ -86,6 +81,8 @@ int sound_init(const void *blob)
 	sound_hw_params(codec_dev, SAMPLERATE, 16, 2);
 	sound_startup(i2s_dev);
 	sound_startup(codec_dev);
+
+	printf("rk sound is inited %p %p %d\n", i2s_dev, codec_dev, ret);
 
 	return ret;
 }
@@ -95,34 +92,36 @@ static int _sound_play(struct udevice *dev, unsigned int *data,
 {
 	const struct snd_soc_dai_ops *ops = dev_get_driver_ops(dev);
 
-	if (!ops || !ops->transfer)
+	if (!ops || !ops->transfer) {
+		printf("failed to get dai ops from %p\n", dev);
 		return -ENOTSUPP;
-
+	}
 	return ops->transfer(dev, data, data_size);
 }
 
 int sound_play(u32 msec, u32 frequency)
 {
-	unsigned int *buf;
+	unsigned int *buf = yl_wav;
 	unsigned long buf_size;
 	unsigned int ret = 0;
 
-	buf_size = WAV_SIZE;
-
-	buf = malloc(buf_size);
+	buf_size = yl_wav_len; // WAV_SIZE;
+/*	buf = malloc(buf_size);
 	if (!buf) {
 		debug("%s: buf malloc failed\n", __func__);
 		return -ENOMEM;
 	}
 	ret = load_audio_wav(buf, "boot.wav", buf_size);
+	*/
+
 	/* if boot.wav not find, use sound_create_square_wave */
-	if (ret <= 0)
+	/*if (ret <= 0)
 		sound_create_square_wave((unsigned short *)buf,
 					 buf_size / sizeof(unsigned short),
 					 frequency);
-
+	*/
 	ret = _sound_play(i2s_dev, buf, (buf_size / sizeof(int)));
-	free(buf);
+	// free(buf);
 
 	return ret;
 }

@@ -20,8 +20,8 @@
 // boot mode, can be changed by powerkey
 extern int yl_pwr_btn_click_count; // defined and set in rk8xx_pwrkey.c
 #define YL_BOOT_FAST  1 //  - normal boot flow
-// 2 - reserved
-#define YL_BOOT_DEBUG 3 // - advanced debug mode, enable usb and show boot menu 
+#define YL_BOOT_MENU 2  // - enable usb and show boot menu
+#define YL_BOOT_EMMC 3 // - boot from eMMC 
 // 4 - reserved
 #define YL_BOOT_UPDATE 5 // - usb update
 //

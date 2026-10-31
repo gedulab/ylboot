@@ -331,7 +331,7 @@ const char *bootdelay_process(void)
 			bootdelay);
 #endif
 
-	debug("### main_loop entered: bootdelay=%d\n\n", bootdelay);
+	debug("### main_loop entered: bootdelay=%d pwrkey=%d\n\n", bootdelay, yl_pwr_btn_click_count);
 
 	if(yl_pwr_btn_click_count > 1 && yl_pwr_btn_click_count < 5)
 		bootdelay = menu_show(bootdelay*10*yl_pwr_btn_click_count);
@@ -366,14 +366,16 @@ __weak void autoboot_command_fail_handle(void) {}
 
 void autoboot_command(const char *s)
 {
-	debug("### main_loop: bootcmd=\"%s\"\n", s ? s : "<UNDEFINED>");
+	printf("### main_loop: bootcmd=\"%s\" pwrkey=%d\n", s ? s : "<UNDEFINED>", yl_pwr_btn_click_count);
 
 	if (stored_bootdelay != -1 && s) {
 		int abort;
 
 		/* round 3c: the laptop keyboard and the screen before the countdown */
-		if(yl_pwr_btn_click_count == YL_BOOT_DEBUG) {
-			osl_countdown_input();
+		if(yl_pwr_btn_click_count == YL_BOOT_MENU) {
+			// osl_countdown_input(); changed rule to no need esc
+			menu_show(30);
+			return;
 		}
 		abort = abortboot(stored_bootdelay);
 

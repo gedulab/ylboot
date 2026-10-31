@@ -12,6 +12,7 @@
 
 #include <dm/uclass-id.h>
 #include <linux/list.h>
+#include <command.h>
 
 /** Log levels supported, ranging from most to least important */
 enum log_level_t {

@@ -13,7 +13,7 @@
 #include <i2c.h>
 #include <i2s.h>
 #include <sound.h>
-#include <asm/arch/sound.h>
+// #include <asm/arch/sound.h>
 #include "wm8994.h"
 #include "max98095.h"
 
@@ -142,8 +142,8 @@ static int codec_init(const void *blob, struct i2stx_info *pi2s_tx)
 
 	return 0;
 }
-
-int sound_init(const void *blob)
+// add i2s by Raymond
+int i2s_sound_init(const void *blob)
 {
 	int ret;
 	struct i2stx_info *pi2s_tx = &g_i2stx_pri;
@@ -169,8 +169,8 @@ int sound_init(const void *blob)
 
 	return ret;
 }
-
-int sound_play(uint32_t msec, uint32_t frequency)
+// // add i2s by Raymond
+int i2s_sound_play(uint32_t msec, uint32_t frequency)
 {
 	unsigned int *data;
 	unsigned long data_size;

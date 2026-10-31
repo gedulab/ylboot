@@ -249,6 +249,9 @@ static void osl_set_boot_mode(int devtag)
 	case 'u':
 		value = BOOT_USB;
 		break;
+	case 0:
+		value = 0;// clear it 
+		break;
 	default:
 		value = BOOT_NVME;
 		break;
@@ -582,11 +585,7 @@ TAG_NVME:
 }
 static int osl_get_boot_mode_register()
 {
-	static reg_boot = 0;
-	if(reg_boot == 0)
-		reg_boot = readl((void *)CONFIG_ROCKCHIP_BOOT_MODE_REG);
-
-	return reg_boot;
+	return readl((void *)CONFIG_ROCKCHIP_BOOT_MODE_REG);
 }
 /*
 // check whether it's restore emmc using usb 
@@ -1116,14 +1115,20 @@ static int do_bootyl(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
 		cli_loop();
 	}
 
-	if( (argc>1 && strcmp(argv[1], "menu")== 0) )  {
+	if(reg_boot == BOOT_ADBG || yl_pwr_btn_click_count == YL_BOOT_MENU ||  (argc>1 && strcmp(argv[1], "menu")== 0) )  {
+		// clear the conditions to avoid loop when user chooses an menu item and enter bootyl again
+		osl_set_boot_mode(0); // clear reg boot
+		yl_pwr_btn_click_count = 1;
 		ret = menu_show(30);
 		return -1; // return to shell	   
     }
 	else if (argc > 1) {
         bootdev = argv[1];
 		// osl_set_boot_stor(argv[1]);
-	} else {
+	} else if(yl_pwr_btn_click_count == YL_BOOT_EMMC){
+		bootdev = "emmc";
+	}
+	else {
 		 bootdev = env_get("bootos"); // get boot option from reboot modes 
 	}
 	printf("booting ulan from %s device now\n", bootdev);

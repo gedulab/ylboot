@@ -61,7 +61,8 @@ void ndb_enable_lcd(const char* msg, int errcode)
 		gd->flags |= GD_FLG_SERIAL_READY; // turn on local display via a bug of u-boot, see putc in console.c
 		printf("Hi geuder, local console is enabled for %s (err %d).\n", msg, errcode);
 	} else {
-		printf("%s (err %d).\n", msg, errcode);
+		// printf("%s (err %d).\n", msg, errcode);
+		// already enabled, ignore. Raymond 2026-10-29
 	}
 }
 
