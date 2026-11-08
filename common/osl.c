@@ -986,7 +986,7 @@ static bool osl_menu_entry_exist(osl_mgr* om, const char * mi_value)
 
 	return false;
 }
-
+// callback to generate an menu item 
 static int osl_fed_section(osl_mgr* om, const char* bootentry, const char* ifname, const char* devpart)
 {
 	char mi[16], mv[200];

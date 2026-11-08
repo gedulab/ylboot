@@ -59,7 +59,8 @@ static void rk8xx_pwron_fall_handler(int irq, void *data)
 		// puts(ANSI_COLOR_REVERSE);
 		printf("Power button counter = \033[1;5;31m%d\033[0m\n", yl_pwr_btn_click_count);
 		// puts(ANSI_COLOR_RESET);
-		udelay(2000*1000); // delay 2 second to let user see the counter
+		// udelay(2000*1000); // delay 2 second to let user see the counter
+		// bad idea, trigger long press and bug comes
 	}
 	if((yl_pwr_btn_click_count >= 5) && (set_flag == 0)) {
 		update_show_bmp("update_sys.bmp",&gImage_12);
